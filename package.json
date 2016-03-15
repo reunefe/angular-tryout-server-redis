@@ -1,0 +1,15 @@
+{
+  "name": "angular-material-tryout-server",
+  "version": "0.0.1",
+  "description": "Tryout of angular js material design elements",
+  "author": "Femke Reunes",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "express": "^4.13.3",
+    "body-parser": "^1.15.0",
+    "mongodb": "^2.1.7"
+  },
+  "scripts": {
+  }
+}
