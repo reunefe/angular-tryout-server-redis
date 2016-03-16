@@ -1,19 +1,14 @@
 [
   {
+    "label": "books",
+    "path": "/books",
+    "editable": false
+  },
+  {
     "label": "kittens",
-    "path": "generic/kittens",
-    "url": "http://placekitten.com/{{imageWidth}}/{{imageHeight}}?image={{index}}",
-    "maxCount": 16
-  },
-  {
-    "label": "dogs",
-    "path": "generic/dogs",
-    "url": "http://loremflickr.com/{{imageWidth}}/{{imageHeight}}/dogs?random={{index}}"
-  },
-  {
-    "label": "bees",
-    "path": "generic/bees",
-    "url": "http://placebee.co.uk/{{imageWidth}}x{{imageHeight}}/{{index}}",
-    "maxCount": 9
+    "path": "/generic/kittens",
+    "url": "http://placekitten.com/imageWidth/imageHeight?image=index",
+    "maxCount": 16,
+    "editable": true
   }
 ]
