@@ -1,30 +1,25 @@
 'use strict';
 
 let mongoUtil = require("../mongo/mongoUtil");
+let imageUrlUtil = require("./imageUrlUtil");
 
 module.exports = function (request, response) {
-	let imageUrl = request.body || {};
+	let imageUrl = imageUrlUtil.validateAndPrepare(request.body);
 
-	if (imageUrl.maxCount <= 0) {
-		delete imageUrl.maxCount;
-	}
-
-	if (!imageUrl.path || !imageUrl.url || !imageUrl.label) {
-		response.sendStatus(400);
-		return;
+	if (!imageUrl) {
+		return response.status(400).send("The label and url must be given!");
 	}
 
 	let imageUrls = mongoUtil.imageUrls();
 
-	delete imageUrl._id; //Conflicts otherwise
 	imageUrls.replaceOne(
 		{label: imageUrl.label},
 		imageUrl,
 		function (err, results) {
 			if (err) {
-				response.sendStatus(400);
-			} else {
-				response.json(results);
+				return response.status(400).send(err);
 			}
-		});
+			response.json(results);
+		}
+	);
 };

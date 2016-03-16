@@ -1,19 +1,15 @@
 'use strict';
 
-let mongoUtil = require("../mongo/mongoUtil");
+let imageUrlUtil = require('./imageUrlUtil');
 
 module.exports = function (request, response) {
 	let imageLabel = request.params.imageLabel;
-	let imageUrls = mongoUtil.imageUrls();
 
-	imageUrls.createIndex({label: "text"});
-
-	imageUrls.find({$text: {$search: imageLabel}}).limit(1).next(function (err, doc) {
-		console.log(err)
-		if (err || !doc) {
-			response.sendStatus(400);
-		} else {
-			response.json(doc);
-		}
+	imageUrlUtil.searchByLabel(imageLabel, function (existing) {
+		response.json(existing[0]);
+	}, function (collection) {
+		response.status(400).send("Label not found");
+	}, function (status, error) {
+		response.status(status).send(error);
 	});
 };

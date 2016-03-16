@@ -10,9 +10,9 @@ module.exports = function (request, response) {
 		{label: imageLabel},
 		function (err, results) {
 			if (err) {
-				response.sendStatus(400);
-			} else {
-				response.json(results);
+				return response.status(400).send(err);
 			}
-		});
+			response.json(results);
+		}
+	);
 };

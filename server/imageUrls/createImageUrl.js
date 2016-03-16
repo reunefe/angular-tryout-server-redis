@@ -1,37 +1,24 @@
 'use strict';
 
-let mongoUtil = require("../mongo/mongoUtil");
+let imageUrlUtil = require('./imageUrlUtil');
 
 module.exports = function (request, response) {
-	let imageUrl = request.body || {};
+	let imageUrl = imageUrlUtil.validateAndPrepare(request.body);
 
-	if (!imageUrl.url || !imageUrl.label) {
-		response.sendStatus(400);
-		return;
+	if (!imageUrl) {
+		return response.status(400).send("The label and url must be given!");
 	}
 
-	if (imageUrl.maxCount <= 0) {
-		delete imageUrl.maxCount;
-	}
-
-	imageUrl.path = "/generic/" + imageUrl.label.toLowerCase();
-	imageUrl.editable = true;
-
-	let imageUrls = mongoUtil.imageUrls();
-
-	imageUrls.createIndex({label: "text"});
-
-	imageUrls.find({$match: {$text: {$search: imageUrl.label}}}).limit(1).next(function (err, doc) {
-		if (!doc) {
-			imageUrls.insertOne(imageUrl, function (err, doc) {
-				if (err) {
-					response.sendStatus(400);
-				} else {
-					response.json(imageUrl);
-				}
-			});
-		} else {
-			response.sendStatus(400); // Item should not exist!
-		}
+	imageUrlUtil.searchByLabel(imageUrl.label, function (existing) {
+		return response.status(409).send("Label already exists!");
+	}, function (collection) {
+		collection.insertOne(imageUrl, function (err, doc) {
+			if (err) {
+				return response.status(400).send(err);
+			}
+			response.json(imageUrl);
+		});
+	}, function (status, error) {
+		return response.status(status).send(error);
 	});
 };

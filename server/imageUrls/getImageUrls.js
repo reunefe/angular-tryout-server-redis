@@ -4,9 +4,9 @@ let mongoUtil = require("../mongo/mongoUtil");
 
 module.exports = function (request, response) {
 	let imageUrls = mongoUtil.imageUrls();
-	imageUrls.find().toArray(function(err, docs) {
+	imageUrls.find().toArray(function (err, docs) {
 		if (err) {
-			response.sendStatus(400);
+			return response.status(400).send(err);
 		}
 		response.json(docs);
 	});
