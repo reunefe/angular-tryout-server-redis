@@ -6,12 +6,12 @@ let bodyParser = require("body-parser");
 let jsonParser = bodyParser.json();
 
 router.route("/")
-	.get(require('./GetImageUrls'))
-	.post(jsonParser, require('./CreateImageUrl'));
+	.get(require('./getImageUrls'))
+	.post(jsonParser, require('./createImageUrl'));
 
 router.route("/:imageLabel")
-	.get(require('./GetImageUrlByLabel'))
-	.put(jsonParser, require('./UpdateImageUrl'))
-	.delete(jsonParser, require('./DeleteImageUrl'));
+	.get(require('./getImageUrlByLabel'))
+	.put(jsonParser, require('./updateImageUrl'))
+	.delete(jsonParser, require('./deleteImageUrl'));
 
 module.exports = router;
