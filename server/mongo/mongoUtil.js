@@ -1,23 +1,31 @@
 "use strict";
 
+let fs = require('fs');
 let mongo = require("mongodb");
 let client = mongo.MongoClient;
+let files;
 let _db;
 
 module.exports = {
-	connect(){
+	connect: function () {
 		client.connect("mongodb://localhost:27017/angular-material-tryout", (err, db) => {
-			if(err){
+			if (err) {
 				console.log(err);
 				console.log("Error connecting to Mongo - check mongod connection");
 				process.exit(1);
 			}
 			_db = db;
-		console.log("Connected to Mongo");
-	})
-		;
+			files = new mongo.GridFSBucket(db);
+			console.log("Connected to Mongo");
+		});
 	},
-	imageUrls(){
-		return _db.collection("imageUrls");
+	fs: function () {
+		return fs;
+	},
+	files: function () {
+		return files;
+	},
+	cats: function () {
+		return _db.collection("cats");
 	}
 };

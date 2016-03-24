@@ -4,12 +4,12 @@
   "description": "Tryout of angular js material design elements",
   "author": "Femke Reunes",
   "dependencies": {
+    "connect-multiparty": "^2.0.0"
   },
   "devDependencies": {
     "express": "^4.13.3",
     "body-parser": "^1.15.0",
-    "mongodb": "^2.1.7"
+    "mongodb": "^2.1.11"
   },
-  "scripts": {
-  }
+  "scripts": {}
 }
