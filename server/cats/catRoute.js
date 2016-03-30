@@ -10,7 +10,7 @@ router
 	.get(require('./getCats'))
 	.post(multipartyMiddleware, require('./registerCat'));
 
-router.route("/:imageLabel")
+router.route("/:id")
 	.get(require('./getCatById'))
 	.put(multipartyMiddleware, require('./updateCat'))
 	.delete(require('./deleteCat'));

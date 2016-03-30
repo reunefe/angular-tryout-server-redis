@@ -1,9 +1,9 @@
 "use strict";
 
-let fs = require('fs');
+let fileSystem = require('fs');
 let mongo = require("mongodb");
 let client = mongo.MongoClient;
-let files;
+let filesDb;
 let _db;
 
 module.exports = {
@@ -15,15 +15,18 @@ module.exports = {
 				process.exit(1);
 			}
 			_db = db;
-			files = new mongo.GridFSBucket(db);
+			filesDb = new mongo.GridFSBucket(db);
 			console.log("Connected to Mongo");
 		});
 	},
-	fs: function () {
-		return fs;
+	fileSystem: function () {
+		return fileSystem;
 	},
-	files: function () {
-		return files;
+	filesDb: function () {
+		return filesDb;
+	},
+	searchById: function (id) {
+		return {_id: new mongo.ObjectID(id)};
 	},
 	cats: function () {
 		return _db.collection("cats");

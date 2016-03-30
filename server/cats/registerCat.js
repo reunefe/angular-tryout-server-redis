@@ -6,6 +6,10 @@ module.exports = function (request, response) {
 	let cat = request.body;
 	let part = request.files.file;
 
+	if(!cat || !part){
+		return response.status(400).send("Something went wrong!");
+	}
+
 	let cats = mongoUtil.cats();
 	cats.insertOne(cat, function (err, doc) {
 		if (err) {
@@ -13,13 +17,12 @@ module.exports = function (request, response) {
 		}
 
 		let catId = doc.insertedId.toString();
-		let readStream = mongoUtil.fs().createReadStream(part.path);
-		let uploadStream = readStream.pipe(mongoUtil.files().openUploadStream(catId));
+		let readStream = mongoUtil.fileSystem().createReadStream(part.path);
+		let uploadStream = readStream.pipe(mongoUtil.filesDb().openUploadStream(catId));
 		uploadStream.on('error', function (error) {
-			console.log(error);
+			return response.status(400).send(err);
 		});
 		uploadStream.on('finish', function () {
-			console.log('done!');
 			return response.status(200).send(doc);
 		});
 	});
