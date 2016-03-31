@@ -17,3 +17,4 @@ app.use(function (req, res, next) {
 });
 
 app.use('/api/cats', require('./cats/catRoute'));
+app.use('/api/owners', require('./owners/ownerRoute'));
