@@ -4,7 +4,7 @@ let mongoUtil = require("../mongo/mongoUtil");
 let deleteUtil = require("../util/deleteUtil");
 
 module.exports = function (request, response) {
-	let catId = request.params.id;
+	let catId = request.params.catId;
 	let cats = mongoUtil.cats();
 	let catFileDb = mongoUtil.catFileDb();
 

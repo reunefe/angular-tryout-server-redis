@@ -1,10 +1,10 @@
 'use strict';
 
-module.exports = function (collection, fileDb, response) {
+module.exports = function (collection, fileDb, response, filter) {
 	let result = [];
 	let index = 0;
 
-	collection.find().forEach(function (item) {
+	collection.find(filter).forEach(function (item) {
 		index++;
 		let downloadStream = fileDb.openDownloadStreamByName(item._id.toString());
 		let buffer = [];
@@ -20,7 +20,7 @@ module.exports = function (collection, fileDb, response) {
 		});
 		downloadStream.on('end', function () { // done
 			let newBuffer = Buffer.concat(buffer);
-			item.foto = newBuffer.toString('base64');
+			item.foto = 'data:image/jpeg;base64,' + newBuffer.toString('base64');
 			result.push(item);
 			index--;
 			if (index == 0) {
