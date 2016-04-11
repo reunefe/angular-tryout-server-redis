@@ -1,42 +1,38 @@
 'use strict';
 
-let mongoUtil = require("../mongo/mongoUtil");
+let redisUtil = require("../util/redisUtil");
 
 module.exports = function (request, response) {
-	let owners = mongoUtil.owners();
-	let fileDb = mongoUtil.ownerFileDb();
-	let result = [];
-	let index = 0;
-
-	owners.find().forEach(function (item) {
-		index++;
-		let downloadStream = fileDb.openDownloadStreamByName(item._id.toString());
-		let buffer = [];
-		downloadStream.on('data', function (chunk) {
-			buffer.push(chunk);
-		});
-		downloadStream.on('error', function (error) {
-			result.push(item);
-			index--;
-			if (index == 0) {
-				return response.json(result);
-			}
-		});
-		downloadStream.on('end', function () { // done
-			let newBuffer = Buffer.concat(buffer);
-			item.foto = 'data:image/jpeg;base64,' + newBuffer.toString('base64');
-			result.push(item);
-			index--;
-			if (index == 0) {
-				return response.json(result);
-			}
-		});
-	}, function (error) {
-		if (error) {
-			return response.status(400).send(error);
+	redisUtil.getList("owners", true, function (err, list) {
+		if (err) {
+			return response.status(400).send(err);
 		}
-		if (index == 0) {
+
+		if (list.length == 0) {
 			return response.json([]);
 		}
+
+		let index = 0;
+		let result = [];
+
+		list.forEach(function (item) {
+			index++;
+			redisUtil.getItemFromList("ownerImages", item._id, false, function (err, image) {
+				if (err) {
+					return response.status(400).send(err);
+				}
+				// done
+				if (image) {
+					item.foto = 'data:image/jpeg;base64,' + image.toString('base64');
+				}
+				result.push(item);
+				index--;
+
+				if (index == 0) {
+					return response.json(result);
+				}
+			})
+		});
 	});
+
 };

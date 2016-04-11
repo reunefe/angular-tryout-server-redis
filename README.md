@@ -1,23 +1,12 @@
-# angular-material-tryout-server
+# angular-tryout-server-redis
 
-Attributen Cat
-    - naam
-    - geboortedatum
-    - geslacht
-    - gesteriliseerd
-    - ras
-    - medicijnen
-    - dierenarts
-    - eigenaar
-    - foto
-    - voeding
-    - gedrag
 Attributen Owner
     - naam
     - adres
     - telefoonnummer
     - email
     - noodnummer
+
 Attributen Registration
     - van_tot
     - cat
