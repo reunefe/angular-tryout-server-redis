@@ -20,7 +20,7 @@ module.exports = function (request, response) {
 		}
 
 		if (!file) {
-			return response.sendStatus(200);
+			return response.status(200).send(itemId);
 		}
 
 		let buffer = [];
@@ -37,8 +37,7 @@ module.exports = function (request, response) {
 				if (err) {
 					return response.status(400).send(err);
 				}
-
-				return response.sendStatus(200);
+				return response.status(200).send(itemId);
 			});
 		});
 	});
