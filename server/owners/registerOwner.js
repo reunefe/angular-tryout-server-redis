@@ -14,7 +14,7 @@ module.exports = function (request, response) {
 
 	owner._id = uuidGen.v4();
 
-	redisUtil.insertInSet("owners", owner._id, owner, true, function (err, itemId) {
+	redisUtil.insertInList("owners", owner._id, owner, true, function (err, itemId) {
 		if (err) {
 			return response.status(400).send(err);
 		}
@@ -33,7 +33,7 @@ module.exports = function (request, response) {
 		});
 		readStream.on('end', function () {
 			let newBuffer = Buffer.concat(buffer);
-			redisUtil.insertInSet("ownerImages", itemId, newBuffer, false, function (err, result) {
+			redisUtil.insertInList("ownerImages", itemId, newBuffer, false, function (err, result) {
 				if (err) {
 					return response.status(400).send(err);
 				}

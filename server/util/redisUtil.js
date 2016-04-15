@@ -30,13 +30,13 @@ module.exports = {
 			callback(err, parse ? JSON.parse(response) : response);
 		});
 	},
-	insertInSet: function (list, key, value, stringify, callback) {
+	insertInList: function (list, key, value, stringify, callback) {
 		let item = stringify ? JSON.stringify(value) : value;
 		client.hset(getList(list), key, item, function (err) {
 			callback(err, key);
 		});
 	},
-	removeFromSet: function (list, key, callback) {
+	removeFromList: function (list, key, callback) {
 		client.hdel(getList(list), key, function (err, response) {
 			callback(err, response);
 		});
