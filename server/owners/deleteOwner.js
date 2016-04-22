@@ -3,7 +3,7 @@
 let redisUtil = require("../util/redisUtil");
 
 module.exports = function (request, response) {
-	let ownerId = request.params.id;
+	let ownerId = request.params.ownerId;
 
 	redisUtil.removeFromList("ownerImages", ownerId, function (err, results) {
 		if (err) {
