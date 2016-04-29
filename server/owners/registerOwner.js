@@ -8,7 +8,7 @@ module.exports = function (request, response) {
 	let file = request.files.file;
 
 	if (!owner) {
-		return response.status(400).send("Something went wrong!");
+		return response.status(400).json({error: "Something went wrong!"});
 	}
 
 
@@ -20,7 +20,7 @@ module.exports = function (request, response) {
 		}
 
 		if (!file) {
-			return response.status(200).send(itemId);
+			return response.status(200).json({itemId: itemId});
 		}
 
 		let buffer = [];
@@ -37,7 +37,7 @@ module.exports = function (request, response) {
 				if (err) {
 					return response.status(400).send(err);
 				}
-				return response.status(200).send(itemId);
+				return response.status(200).json({itemId: itemId});
 			});
 		});
 	});
