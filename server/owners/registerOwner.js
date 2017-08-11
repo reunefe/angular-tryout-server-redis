@@ -19,7 +19,7 @@ module.exports = function (request, response) {
 			return response.status(400).send(err);
 		}
 
-		if (!file) {
+		if (!file || file.size === 0) {
 			return response.status(200).json({itemId: itemId});
 		}
 
